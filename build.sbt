@@ -17,6 +17,8 @@ lazy val canoeVersion = "0.6.0"
 lazy val http4sVersion = "0.23.18"
 lazy val log4CatsVersion = "2.5.0"
 lazy val logbackClassic = "1.2.3"
+lazy val jsoup = "1.16.1"
+lazy val scalaTestVersion = "3.2.12"
 
 lazy val root = project
 	.aggregate(
@@ -51,5 +53,7 @@ lazy val scraper = project
 		"org.http4s" %% "http4s-circe" % http4sVersion,
 		"org.typelevel" %% "log4cats-slf4j" % log4CatsVersion, // TODO  move to cross project dependencies
 		"ch.qos.logback" % "logback-classic" % logbackClassic,
+		"org.jsoup" % "jsoup" % jsoup,
+		"org.scalatest" %% "scalatest" % scalaTestVersion % Test
 		)
 	)
