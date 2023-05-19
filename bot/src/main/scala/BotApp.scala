@@ -17,8 +17,8 @@ object BotApp extends IOApp.Simple {
 
 	val testPost =
 		"The gala concert of the Tallinn Talent music competition is open to the public \n\n" +
-		"On Sunday 21 May at 2 pm, the festive closing concert of the Tallinn Talent 2023 youth music competition will" +
-		" be held at the Estonia Concert Hall, where its initiator and patron Mayor Mihhail Kõlvart will acknowledge " +
+		"On Sunday 21 May at 2 pm, the festive closing concert of the Tallinn Talent 2023 youth music competition will " +
+		"be held at the Estonia Concert Hall, where its initiator and patron Mayor Mihhail Kõlvart will acknowledge " +
 		"the winners and present them with city scholarships. The free gala concert is open to the public.\n\n " +
 		"16. May 2023 "
 
