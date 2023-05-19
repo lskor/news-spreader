@@ -10,15 +10,15 @@ lazy val thisBuildSettings: Seq[Setting[_]] = inThisBuild(
 	)
 )
 
-lazy val fs2Version = "3.2.10"
-lazy val catsCoreVersion = "2.7.0"
-lazy val catsEffectVersion = "3.3.13"
-lazy val canoeVersion = "0.6.0"
-lazy val http4sVersion = "0.23.18"
-lazy val log4CatsVersion = "2.5.0"
-lazy val logbackClassic = "1.2.3"
-lazy val jsoup = "1.16.1"
-lazy val scalaTestVersion = "3.2.12"
+val fs2Version = "3.2.10"
+val catsCoreVersion = "2.7.0"
+val catsEffectVersion = "3.3.13"
+val canoeVersion = "0.6.0"
+val http4sVersion = "0.23.18"
+val log4CatsVersion = "2.5.0"
+val logbackClassic = "1.2.3"
+val jsoup = "1.16.1"
+val scalaTestVersion = "3.2.12"
 
 lazy val root = project
 	.aggregate(
@@ -37,6 +37,7 @@ lazy val root = project
 	)
 
 lazy val bot = project
+	.dependsOn(scraper)
 	.settings(
 		libraryDependencies ++= Seq(
 			"org.augustjune" %% "canoe" % canoeVersion,
