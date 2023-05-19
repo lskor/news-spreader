@@ -1,7 +1,7 @@
 import canoe.api._
 import canoe.models.Channel
 import canoe.syntax._
-import cats.effect.{ExitCode, IO, IOApp}
+import cats.effect.{IO, IOApp}
 import fs2.Stream
 
 import scala.concurrent.duration._
@@ -22,14 +22,14 @@ object BotApp extends IOApp.Simple {
 		"the winners and present them with city scholarships. The free gala concert is open to the public.\n\n " +
 		"16. May 2023 "
 
-	override def run: IO[Unit] = {
-		TelegramClient[IO](token).use(implicit client =>
-			for {
-				_ <- Stream.awakeEvery[IO](7.seconds)
-						.evalMap(_ => chat.send(testPost))
-						.compile
-						.drain
-			} yield ()
-		).as(ExitCode.Success)
-	}
+	override def run: IO[Unit] =
+		Stream
+			.resource(TelegramClient[IO](token))
+			.flatMap(implicit client =>
+				Stream
+					.awakeEvery[IO](7.seconds)
+					.evalMap(_ => chat.send(testPost))
+			)
+			.compile
+			.drain
 }
