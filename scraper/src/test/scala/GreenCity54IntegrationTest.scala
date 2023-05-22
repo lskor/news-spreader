@@ -40,4 +40,8 @@ class GreenCity54IntegrationTest extends AnyFlatSpec with Matchers
 
 		assert(GreenCity54.getNews(81) == expected)
 	}
+
+	"get not existing news" should "throw" in {
+		assertThrows[org.jsoup.HttpStatusException](GreenCity54.getNews(0))
+	}
 }

@@ -42,6 +42,8 @@ object ScraperApp extends IOApp {
 
 	private def getContent(from: Long): IO[String] =
 		IO(NewsFormatter.get(GreenCity54.getNews(from)))
+			.handleErrorWith(err =>
+				logger.error(s"Can't read new post [point=$from , message = ${err.getMessage}]") *> IO(""))
 
 	private def savePointIfPostExist(newPoint: Long, post: String): IO[Unit] = post match {
 		case post if post.nonEmpty => {
