@@ -1,6 +1,7 @@
 import cats.effect.{ExitCode, IO, IOApp}
 import cats.syntax.all._
 import com.comcast.ip4s._
+import db.PointService
 import org.http4s._
 import org.http4s.dsl.io._
 import org.http4s.ember.server._
@@ -11,8 +12,6 @@ object ScraperApp extends IOApp {
 
 	private val logger = Slf4jLogger.getLogger[IO]
 
-	private var point = 10216L
-
 	private val helloRoutes = HttpRoutes.of[IO] {
 
 		case GET -> Root / "post" =>
@@ -22,21 +21,24 @@ object ScraperApp extends IOApp {
 	private val httpApp = Seq(helloRoutes).reduce(_ <+> _).orNotFound
 
 	override def run(args: List[String]): IO[ExitCode] =
-		greeting *> EmberServerBuilder
-			.default[IO]
-			.withHost(ipv4"127.0.0.1")
-			.withPort(port"9001")
-			.withHttpApp(httpApp)
-			.build
-			.useForever
+		greeting *>
+			PointService.init *>
+				EmberServerBuilder
+					.default[IO]
+					.withHost(ipv4"127.0.0.1")
+					.withPort(port"9001")
+					.withHttpApp(httpApp)
+					.build
+					.useForever
 
 	private def greeting: IO[Unit] = logger.info(s"Running Scraper ...")
 
 	private def tryToFindPost: IO[String] = for {
-		_ <- logger.debug(s"Start trying to find new post [point=$point]")
-		newPoint <- IO(point + 1)
+		point <- PointService.get
+		newPoint <- IO(point + 1) // ToDo yuck!
+		_ <- logger.debug(s"Start trying to find new post [point=$newPoint]")
 		post <- getContent(newPoint)
-		_ <- savePointIfPostExist(newPoint, post)
+		_ <- savePointIfPostExist(newPoint, point, post)
 	} yield post
 
 	private def getContent(from: Long): IO[String] =
@@ -44,11 +46,12 @@ object ScraperApp extends IOApp {
 			.handleErrorWith(err =>
 				logger.debug(s"Can't read new post [point=$from , message = ${err.getMessage}]") *> IO(""))
 
-	private def savePointIfPostExist(newPoint: Long, post: String): IO[Unit] = post match {
-		case post if post.nonEmpty => {
-			point = newPoint
-			logger.info(s"New post was found [new point = $newPoint, post= $post]")
-		}
+	private def savePointIfPostExist(newPoint: Long, point: Long, post: String): IO[Unit] = post match {
+		case post if post.nonEmpty =>  for {
+			_ <- PointService.update(newPoint)
+			_ <- logger.info(s"New post was found [new point = $newPoint, post= $post]")
+		} yield()
+
 		case _ => logger.debug(s"New post was not found [newPoint=$newPoint , point=$point]")
 	}
 }

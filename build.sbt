@@ -18,6 +18,8 @@ val http4sVersion = "0.23.18"
 val log4CatsVersion = "2.5.0"
 val logbackClassic = "1.2.3"
 val jsoup = "1.16.1"
+val doobieVersion = "1.0.0-RC1"
+val postgresql = "42.6.0"
 val scalaTestVersion = "3.2.12"
 
 lazy val root = project
@@ -55,6 +57,10 @@ lazy val scraper = project
 		"org.typelevel" %% "log4cats-slf4j" % log4CatsVersion, // TODO  move to cross project dependencies
 		"ch.qos.logback" % "logback-classic" % logbackClassic,
 		"org.jsoup" % "jsoup" % jsoup,
+		"org.tpolecat" %% "doobie-core" % doobieVersion,
+		"org.tpolecat" %% "doobie-h2" % doobieVersion,
+		"org.tpolecat" %% "doobie-hikari" % doobieVersion,
+		"org.postgresql" % "postgresql" % postgresql,
 		"org.scalatest" %% "scalatest" % scalaTestVersion % Test
 		)
 	)
