@@ -15,9 +15,8 @@ object ScraperApp extends IOApp {
 
 	private val helloRoutes = HttpRoutes.of[IO] {
 
-		case GET -> Root / "post" => {
+		case GET -> Root / "post" =>
 			tryToFindPost.flatMap(post => Ok(post))
-		}
 	}
 
 	private val httpApp = Seq(helloRoutes).reduce(_ <+> _).orNotFound
@@ -43,13 +42,13 @@ object ScraperApp extends IOApp {
 	private def getContent(from: Long): IO[String] =
 		IO(NewsFormatter.get(GreenCity54.getNews(from)))
 			.handleErrorWith(err =>
-				logger.error(s"Can't read new post [point=$from , message = ${err.getMessage}]") *> IO(""))
+				logger.debug(s"Can't read new post [point=$from , message = ${err.getMessage}]") *> IO(""))
 
 	private def savePointIfPostExist(newPoint: Long, post: String): IO[Unit] = post match {
 		case post if post.nonEmpty => {
 			point = newPoint
-			logger.debug(s"New post was found [new point = $newPoint, post= ${post.substring(0, 32)}]")
+			logger.info(s"New post was found [new point = $newPoint, post= $post]")
 		}
-		case _ => logger.debug(s"New post was not found [point=$point]")
+		case _ => logger.debug(s"New post was not found [newPoint=$newPoint , point=$point]")
 	}
 }
