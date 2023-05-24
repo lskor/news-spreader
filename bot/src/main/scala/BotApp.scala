@@ -33,10 +33,14 @@ object BotApp extends IOApp.Simple {
 				implicit val b = bot
 				Stream
 					.awakeEvery[IO](7.seconds)
-					.evalMap(_ => tryToFindPost(client))
+					.evalMap(_ => follow(client))
 					.compile
 					.drain
 			}
+
+	private def follow(client: Client[IO])(implicit tc: TelegramClient[IO]): IO[Unit] =
+		tryToFindPost(client)
+			.handleErrorWith(err => logger.error(s"Got an error $err"))
 
 	private def tryToFindPost(client: Client[IO])(implicit tc: TelegramClient[IO]): IO[Unit] = for {
 			_ <- logger.debug("Trying to find new post... ")

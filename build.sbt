@@ -39,12 +39,12 @@ lazy val root = project
 	)
 
 lazy val bot = project
-	.dependsOn(scraper)
 	.settings(
 		libraryDependencies ++= Seq(
 			"org.augustjune" %% "canoe" % canoeVersion,
 			"org.typelevel" %% "log4cats-slf4j" % log4CatsVersion, // TODO  move to cross project dependencies
 			"ch.qos.logback" % "logback-classic" % logbackClassic,
+			"org.http4s" %% "http4s-ember-client" % http4sVersion,
 		)
 	)
 
@@ -52,7 +52,6 @@ lazy val scraper = project
 	.settings(libraryDependencies ++= Seq(
 		"org.http4s" %% "http4s-dsl" % http4sVersion, // TODO  get rid of a unnecessary dependencies
 		"org.http4s" %% "http4s-ember-server" % http4sVersion,
-		"org.http4s" %% "http4s-ember-client" % http4sVersion,
 		"org.http4s" %% "http4s-circe" % http4sVersion,
 		"org.typelevel" %% "log4cats-slf4j" % log4CatsVersion, // TODO  move to cross project dependencies
 		"ch.qos.logback" % "logback-classic" % logbackClassic,
