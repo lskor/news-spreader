@@ -21,7 +21,7 @@ object ScraperApp extends IOApp {
 	private val httpApp = Seq(helloRoutes).reduce(_ <+> _).orNotFound
 
 	override def run(args: List[String]): IO[ExitCode] =
-		greeting *>
+		logger.info(s"Running Scraper Service...") *>
 			PointService.init *>
 				EmberServerBuilder
 					.default[IO]
@@ -30,8 +30,6 @@ object ScraperApp extends IOApp {
 					.withHttpApp(httpApp)
 					.build
 					.useForever
-
-	private def greeting: IO[Unit] = logger.info(s"Running Scraper ...")
 
 	private def tryToFindPost: IO[String] = for {
 		point <- PointService.get
@@ -42,7 +40,7 @@ object ScraperApp extends IOApp {
 	} yield post
 
 	private def getContent(from: Long): IO[String] =
-		IO(NewsFormatter.get(GreenCity54.getNews(from)))
+		IO(NewsFormatter.get(TallinnNews.getNews(from)))
 			.handleErrorWith(err =>
 				logger.debug(s"Can't read new post [point=$from , message = ${err.getMessage}]") *> IO(""))
 

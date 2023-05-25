@@ -1,6 +1,5 @@
 package db
 
-import cats.implicits.catsSyntaxApply
 import doobie._
 import doobie.implicits._
 object PointRepository {
@@ -10,7 +9,7 @@ object PointRepository {
 			.update
 			.run
 
-	val default: ConnectionIO[Int] = sql"INSERT INTO point (id, value) VALUES (0, 10209) ON CONFLICT DO NOTHING"
+	val default: ConnectionIO[Int] = sql"INSERT INTO point (id, value) VALUES (0, 0) ON CONFLICT DO NOTHING"
 		.update
 		.run
 

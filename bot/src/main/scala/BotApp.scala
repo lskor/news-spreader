@@ -15,10 +15,12 @@ object BotApp extends IOApp.Simple {
 
 	val token: String = "token"
 
-	val chat = Channel(
-		id = -1001795303736L,
-		title = Some("Important News"),
-		username = Some("really_important_news"))
+	private val url = "http://localhost:9001/post"
+
+	private val chat = Channel(
+		id = -1001950191075L,
+		title = Some("Tallinn News"),
+		username = Some("tallinn_newsss"))
 
 	private val applicationResources = for {
 		client <- EmberClientBuilder
@@ -28,24 +30,23 @@ object BotApp extends IOApp.Simple {
 	} yield (client, bot)
 
 	override def run: IO[Unit] =
-		applicationResources
-			.use { case (client, bot) =>
-				implicit val b = bot
-				Stream
-					.awakeEvery[IO](7.seconds)
-					.evalMap(_ => follow(client))
-					.compile
-					.drain
-			}
+		logger.info(s"Running Bot Service...") *>
+			applicationResources
+				.use { case (client, bot) =>
+					implicit val b = bot
+					Stream
+						.awakeEvery[IO](7.seconds)
+						.evalMap(_ => follow(client))
+						.compile
+						.drain
+				}
 
-	private def follow(client: Client[IO])(implicit tc: TelegramClient[IO]): IO[Unit] =
-		tryToFindPost(client)
-			.handleErrorWith(err => logger.error(s"Got an error $err"))
-
-	private def tryToFindPost(client: Client[IO])(implicit tc: TelegramClient[IO]): IO[Unit] = for {
+	private def follow(client: Client[IO])(implicit tc: TelegramClient[IO]): IO[Unit] = for {
 			_ <- logger.debug("Trying to find new post... ")
-			post <- client.expect[String]("http://localhost:9001/post")
-			_ <- sendPost(post)
+			_ <- client
+					.expect[String](url)
+					.flatMap(sendPost)
+					.handleErrorWith(err => logger.error(s"Got an error from service $err"))
 		} yield ()
 
 	private def sendPost(post: String)(implicit tc: TelegramClient[IO]): IO[Unit] = post match {
