@@ -3,7 +3,7 @@ import org.jsoup.Jsoup
 
 object TallinnNews
 {
-	private val url = "http://127.0.0.1:4000/"
+	private val url = "https://lskor.github.io/"
 
 	def getNews(point: Long): NewsDTO =
 	{

@@ -14,7 +14,7 @@ object ScraperApp extends IOApp {
 
 	private val helloRoutes = HttpRoutes.of[IO] {
 
-		case GET -> Root / "post" =>
+		case GET -> Root / "getPost" =>
 			tryToFindPost.flatMap(post => Ok(post))
 	}
 
@@ -25,8 +25,8 @@ object ScraperApp extends IOApp {
 			PointService.init *>
 				EmberServerBuilder
 					.default[IO]
-					.withHost(ipv4"127.0.0.1")
-					.withPort(port"9001")
+					.withHost(Host.fromString(Config.url).get)
+					.withPort(Port.fromString(Config.port).get)
 					.withHttpApp(httpApp)
 					.build
 					.useForever
