@@ -16,13 +16,13 @@ The second one - bot service. Every duration time it calls scraper service endpo
 
 ![Tallinn News](https://github.com/lskor/post-spreader/blob/master/img/tallinn_news.png?raw=true)
 
-## Stack!
+## Stack
 
-![sbt](https://github.com/lskor/post-spreader/blob/master/img/.png?raw=true)
-![cats](https://github.com/lskor/post-spreader/blob/master/img/cats.png?raw=true)
-![cats-effect](https://github.com/lskor/post-spreader/blob/master/img/cats-effect.png?raw=true)
-![fs2](https://github.com/lskor/post-spreader/blob/master/img/fs2.png?raw=true)
-![http4s](https://github.com/lskor/post-spreader/blob/master/img/http4s.png?raw=true)
-![doobie](https://github.com/lskor/post-spreader/blob/master/img/doobie.png?raw=true)
-![canoe](https://github.com/lskor/post-spreader/blob/master/img/canoe.png?raw=true)
-![jsoup](https://github.com/lskor/post-spreader/blob/master/img/.png?raw=true)
+* sbt
+* cats
+* cats-effect
+* fs2
+* http4s
+* Doobie
+* canoe
+* jsoup
