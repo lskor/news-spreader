@@ -1,14 +1,20 @@
 Post Spreader
 =============
+This project implements opportunity to send new news from web-site to the telegram channel. Now the project sent post from https://lskor.github.io/ to the [Tallinn News](https://t.me/tallinn_newsss)
 
 ### The problem
-A long time ago I had some web-site with news and a telegram channel with absolutely the same news. I should have posted a new post to the site and telegram every day. This was like that because a bunch of my users don't have Telegram, so they would rather read news using a web-page, despite the fact that they lose the opportunity to get news immediately after posting.
-Nowadays, I see many news portals which at the same time have a telegram channel too, and I'm sure they made posts to the channel manually. Probably special employees do that every day, like I did.
+I had dealt with some web-site with news. It was simple and old site this news which was important like power outage or elevator repair time. This site didn't have any notification. And owner didn't care how he informed people about important information. People didn't have opportunity get info as fast as they can.
 
-### First step
-At first, I needed a service (some REST API) which constantly monitors the web-resource with news. It should find a new page, scrape it and put it in the database, for example. I would like to put news to the base because there is an important resource for me, which loves to change existing news, but I would like to post those changes as new news to the telegram channel. And another reason: working with Databases from Scala. However, that makes it possible to add another useful functionality.
+Nowadays, I see many news portals which at the same time have a telegram channel, and I'm sure they made posts to the channel manually. Probably special employees do that every day.
 
-And second, I need a bot  which can use api-service and post news when they appear in the database. Here I need to consider how it will be. For the first step I can develop a bot for a particular news resource, which you should add to your channel and after that it will post news there.
+### What's inside
+The project has two main parts. The first one - scraper service with only one endpoint _getPost_. This is http4s server. Then the endpoint is called, service goes to the web-site and tries to find latest news. It uses scraper (Jsoup) and parses HTML of this page. Finds header, body of news, and date. Service formats this message into a bot-friendly format, and as result returns string.
+
+The second one - bot service. Every duration time it calls scraper service endpoint _getPost_ and receives empty or non empty string. Non empty string is sent to custom telegram channel the Tallinn News like string with markdown.
+
+### How it's look like
+
+![Tallinn News](/img/tallinn_news.png")
 
 ### Stack
 
@@ -18,8 +24,5 @@ And second, I need a bot  which can use api-service and post news when they appe
 * fs2
 * http4s
 * Doobie
-* circe
-
-???
-* akka
 * canoe
+* jsoup
