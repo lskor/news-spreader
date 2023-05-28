@@ -14,7 +14,7 @@ The second one - bot service. Every duration time it calls scraper service endpo
 
 ### How it's look like
 
-![Tallinn News](/img/tallinn_news.png")
+![Tallinn News](https://github.com/lskor/post-spreader/blob/master/img/tallinn_news.png?raw=true)
 
 ### Stack
 
