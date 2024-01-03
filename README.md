@@ -1,4 +1,4 @@
-Post Spreader
+Tallinn News Spreader
 =============
 This project implements opportunity to send new news from web-site to the telegram channel. Now the project sent post from https://lskor.github.io/ to the [Tallinn News](https://t.me/tallinn_newsss)
 
